@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Media AI Local</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+  <header>
+    <h1>Media AI Local</h1>
+    <p>Gerador local de Imagens e Vídeos (image→video) + Memória (SQLite + FAISS)</p>
+    <div class="row">
+      <button class="tab" data-tab="img">Imagem (txt2img)</button>
+      <button class="tab" data-tab="img2img">Imagem (img2img)</button>
+      <button class="tab" data-tab="vid">Vídeo (de imagem)</button>
+      <button class="tab" data-tab="hist">Histórico</button>
+      <button class="tab" data-tab="search">Busca semântica</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="tab-img" class="panel">
+      <h2>Gerar Imagem (txt2img)</h2>
+      <label>Prompt</label>
+      <textarea id="prompt" rows="4" placeholder="Ex: retrato cinematico de um robô tocando violão, luz suave"></textarea>
+
+      <label>Negative prompt (opcional)</label>
+      <textarea id="neg" rows="2" placeholder="Ex: low quality, blurry"></textarea>
+
+      <div class="grid">
+        <div>
+          <label>Largura</label>
+          <input id="w" type="number" value="768"/>
+        </div>
+        <div>
+          <label>Altura</label>
+          <input id="h" type="number" value="768"/>
+        </div>
+        <div>
+          <label>Steps</label>
+          <input id="steps" type="number" value="30"/>
+        </div>
+        <div>
+          <label>CFG</label>
+          <input id="cfg" type="number" value="7"/>
+        </div>
+        <div>
+          <label>Seed (0 = aleatório)</label>
+          <input id="seed" type="number" value="0"/>
+        </div>
+      </div>
+
+      <button onclick="genImage()">Gerar</button>
+      <pre id="out-img"></pre>
+    </section>
+
+    <section id="tab-img2img" class="panel hidden">
+      <h2>Gerar Imagem (img2img)</h2>
+      <label>Prompt</label>
+      <textarea id="prompt2" rows="4"></textarea>
+
+      <label>Negative prompt (opcional)</label>
+      <textarea id="neg2" rows="2"></textarea>
+
+      <label>Imagem de referência</label>
+      <input id="file2" type="file" accept="image/*"/>
+
+      <div class="grid">
+        <div>
+          <label>Strength (0.05 a 0.95)</label>
+          <input id="strength2" type="number" value="0.55" step="0.05"/>
+        </div>
+        <div>
+          <label>Steps</label>
+          <input id="steps2" type="number" value="30"/>
+        </div>
+        <div>
+          <label>CFG</label>
+          <input id="cfg2" type="number" value="7"/>
+        </div>
+        <div>
+          <label>Seed (0 = aleatório)</label>
+          <input id="seed2" type="number" value="0"/>
+        </div>
+      </div>
+
+      <button onclick="genImg2Img()">Gerar</button>
+      <pre id="out-img2img"></pre>
+    </section>
+
+    <section id="tab-vid" class="panel hidden">
+      <h2>Gerar Vídeo a partir de Imagem</h2>
+      <label>Imagem de referência</label>
+      <input id="filev" type="file" accept="image/*"/>
+
+      <div class="grid">
+        <div>
+          <label>Frames</label>
+          <input id="frames" type="number" value="25"/>
+        </div>
+        <div>
+          <label>FPS</label>
+          <input id="fps" type="number" value="8"/>
+        </div>
+        <div>
+          <label>Motion bucket</label>
+          <input id="mb" type="number" value="127"/>
+        </div>
+        <div>
+          <label>Noise aug</label>
+          <input id="noise" type="number" value="0.02" step="0.01"/>
+        </div>
+        <div>
+          <label>Seed (0 = aleatório)</label>
+          <input id="seedv" type="number" value="0"/>
+        </div>
+      </div>
+
+      <button onclick="genVideo()">Gerar Vídeo</button>
+      <pre id="out-vid"></pre>
+      <p class="hint">O link do arquivo abre localmente (file:///). Se preferir, veja o caminho e abra no Explorador.</p>
+    </section>
+
+    <section id="tab-hist" class="panel hidden">
+      <h2>Histórico</h2>
+      <button onclick="loadHistory()">Atualizar</button>
+      <pre id="out-hist"></pre>
+    </section>
+
+    <section id="tab-search" class="panel hidden">
+      <h2>Busca semântica (FAISS)</h2>
+      <input id="q" placeholder="Ex: retrato cinematico robô"/>
+      <button onclick="doSearch()">Buscar</button>
+      <pre id="out-search"></pre>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
