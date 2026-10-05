@@ -1,6 +1,26 @@
+# Python
 __pycache__/
 venv/
+.venv/
 .env
+
+# IDE
+.vscode/
+.idea/
+
+# Modelos e caches locais
+models/
+*.safetensors
+*.ckpt
+*.bin
+
+# Dados gerados localmente
+data/*
+!data/.gitkeep
 *.mp4
 *.mp3
-models/
+*.wav
+*.tmp
+
+# Cache de modelos / ML
+.cache/
